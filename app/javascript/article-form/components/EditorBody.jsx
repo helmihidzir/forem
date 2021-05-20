@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import PropTypes from 'prop-types';
 import { useLayoutEffect, useRef } from 'preact/hooks';
+import { useDisableGrammarly } from './useDisableGrammarly';
 import { Toolbar } from './Toolbar';
 import { handleImagePasted } from './pasteImageHelpers';
 import {
@@ -43,7 +44,6 @@ export const EditorBody = ({
   onChange,
   defaultValue,
   switchHelpContext,
-  disableGrammarly,
   version,
 }) => {
   const textAreaRef = useRef(null);
@@ -71,6 +71,8 @@ export const EditorBody = ({
     }
   });
 
+  const { disabledGrammarlyProps } = useDisableGrammarly();
+
   return (
     <div
       data-testid="article-form__body"
@@ -79,7 +81,6 @@ export const EditorBody = ({
       <Toolbar version={version} />
       <MentionAutocompleteTextArea
         ref={textAreaRef}
-        disableGrammarly={disableGrammarly}
         fetchSuggestions={(username) => fetchSearch('usernames', { username })}
         autoResize
         onChange={onChange}
@@ -90,13 +91,13 @@ export const EditorBody = ({
         defaultValue={defaultValue}
         placeholder="Write your post content here..."
         className="crayons-textfield crayons-textfield--ghost crayons-article-form__body__field ff-monospace fs-l h-100"
+        {...disabledGrammarlyProps}
       />
     </div>
   );
 };
 
 EditorBody.propTypes = {
-  disableGrammarly: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   defaultValue: PropTypes.string.isRequired,
   switchHelpContext: PropTypes.func.isRequired,

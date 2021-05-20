@@ -128,7 +128,6 @@ export const MentionAutocompleteTextArea = forwardRef(
       onChange,
       onBlur,
       id: inputId,
-      disableGrammarly,
       ...autocompleteInputProps
     } = inputProps;
 
@@ -348,7 +347,6 @@ export const MentionAutocompleteTextArea = forwardRef(
         >
           <ComboboxInput
             {...autocompleteInputProps}
-            data-gramm_editor={disableGrammarly && 'false'}
             aria-label="Mention user"
             ref={comboboxRef}
             value={textContent}
@@ -367,7 +365,6 @@ export const MentionAutocompleteTextArea = forwardRef(
 
           <textarea
             {...autocompleteInputProps}
-            data-gramm_editor={disableGrammarly && 'false'}
             id={inputId}
             data-mention-autocomplete-active="true"
             ref={mergeInputRefs([plainTextAreaRef, forwardedRef])}
@@ -416,7 +413,6 @@ export const MentionAutocompleteTextArea = forwardRef(
 );
 
 MentionAutocompleteTextArea.propTypes = {
-  disableGrammarly: PropTypes.bool.isRequired,
   replaceElement: PropTypes.node,
   fetchSuggestions: PropTypes.func.isRequired,
   autoResize: PropTypes.bool,

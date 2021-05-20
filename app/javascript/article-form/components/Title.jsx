@@ -1,6 +1,8 @@
 import { h } from 'preact';
 import { useRef, useLayoutEffect } from 'preact/hooks';
 import PropTypes from 'prop-types';
+import { useDisableGrammarly } from './useDisableGrammarly';
+
 // We use this hook for the title field to automatically grow the height of the textarea.
 // It helps keep the entire layout the way it is without having unnecessary scrolling and white spaces.
 // Keep in mind this is what happens only here - in the Preact component.
@@ -10,14 +12,10 @@ import PropTypes from 'prop-types';
 // functionality on .html.erb view because there's no point of it.
 import { useTextAreaAutoResize } from '@utilities/textAreaUtils';
 
-export const Title = ({
-  onChange,
-  defaultValue,
-  switchHelpContext,
-  disableGrammarly,
-}) => {
+export const Title = ({ onChange, defaultValue, switchHelpContext }) => {
   const textAreaRef = useRef(null);
   const { setTextArea, setConstrainToContentHeight } = useTextAreaAutoResize();
+  const { disabledGrammarlyProps } = useDisableGrammarly();
 
   useLayoutEffect(() => {
     if (textAreaRef.current) {
@@ -33,7 +31,6 @@ export const Title = ({
     >
       <textarea
         ref={textAreaRef}
-        data-gramm_editor={disableGrammarly && 'false'}
         className="crayons-textfield crayons-textfield--ghost fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight"
         type="text"
         id="article-form-title"
@@ -49,6 +46,7 @@ export const Title = ({
             e.preventDefault();
           }
         }}
+        {...disabledGrammarlyProps}
       />
     </div>
   );
@@ -58,7 +56,6 @@ Title.propTypes = {
   onChange: PropTypes.func.isRequired,
   defaultValue: PropTypes.string.isRequired,
   switchHelpContext: PropTypes.func.isRequired,
-  disableGrammarly: PropTypes.bool.isRequired,
 };
 
 Title.displayName = 'Title';
